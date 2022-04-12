@@ -105,7 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
               setState(() {
                 _text2 = _searchValue.text;
                 if (_isWord == true) {
-                  _text1 = xmlList.first.toString();
                 } else {
                   _text1 = "Nie znaleziono";
                 }
