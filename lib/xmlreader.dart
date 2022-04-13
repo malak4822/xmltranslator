@@ -10,12 +10,13 @@ Future<List<String>> getXmlFile(
   String xmlString =
       await DefaultAssetBundle.of(context).loadString("assets/test.xml");
 
-  if (xmlString.contains(_text2)) {
-    print("jest slowo");
-    _isWord = true;
-  } else {
-    print("nie ma slowa");
-  }
+  // if (xmlString.contains(_text2)) {
+  //   print("jest slowo");
+  //   _isWord = true;
+  // } else {
+  //   print("nie ma slowa");
+  //   _isWord = false;
+  // }
 
   var raw = xml.XmlDocument.parse(xmlString);
 

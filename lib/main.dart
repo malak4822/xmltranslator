@@ -35,15 +35,16 @@ class MyHomePage extends StatefulWidget {
 final _searchValue = TextEditingController();
 
 class _MyHomePageState extends State<MyHomePage> {
+  String _translatedText = "translted";
   String _text2 = "drugi tekst";
-  String _text1 = "pierwszy tekst";
+
   bool _isWord = false;
 
   // _isWord =
 
   @override
   void initState() {
-    getXmlFile(context, _text2, _text1, _isWord);
+    getXmlFile(context, _text2, _translatedText, _isWord);
     super.initState();
   }
 
@@ -98,16 +99,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Center(child: ButtonClass(
-            onpressed: () async {
-              final xmlList =
-                  await getXmlFile(context, _text2, _text1, _isWord);
-
+            onpressed: () {
+              getXmlFile(context, _text2, _isWord, _translatedText);
               setState(() {
                 _text2 = _searchValue.text;
-                if (_isWord == true) {
-                } else {
-                  _text1 = "Nie znaleziono";
-                }
+                _translatedText = "jest";
+                // if (_isWord == true) {
+                //   _translatedText = "jest";
+                // } else {
+                //   _translatedText = "Nie ma";
+                // }
               });
             },
           )),
@@ -124,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text("Tłumaczenie:",
                 style: GoogleFonts.actor(color: Colors.white, fontSize: 20)),
-            Text(_text1,
+            Text(_translatedText,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.overpass(
                   color: Colors.red,
