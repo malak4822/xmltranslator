@@ -35,16 +35,12 @@ class MyHomePage extends StatefulWidget {
 final _searchValue = TextEditingController();
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _translatedText = "translted";
-  String _text2 = "drugi tekst";
-
-  bool _isWord = false;
-
-  // _isWord =
+  String _keyWord = "translted";
+  String _translation = "drugi tekst";
 
   @override
   void initState() {
-    getXmlFile(context, _text2, _translatedText, _isWord);
+    getXmlFile(context, _translation, _keyWord);
     super.initState();
   }
 
@@ -99,33 +95,30 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Center(child: ButtonClass(
-            onpressed: () {
-              getXmlFile(context, _text2, _isWord, _translatedText);
+            onpressed: () async {
+              final _translatedText =
+                  await getXmlFile(context, _translation, _keyWord);
+
               setState(() {
-                _text2 = _searchValue.text;
-                _translatedText = "jest";
-                // if (_isWord == true) {
-                //   _translatedText = "jest";
-                // } else {
-                //   _translatedText = "Nie ma";
-                // }
+                _translation = _searchValue.text;
+                _keyWord = _translatedText.toString();
               });
             },
           )),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text("Szukany tekst:",
                 style: GoogleFonts.actor(color: Colors.white, fontSize: 20)),
-            Text(_text2,
+            Text(_translation,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.overpass(
                   color: Colors.green,
                   fontSize: 30,
                 ))
           ]),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Wrap(children: [
             Text("Tłumaczenie:",
                 style: GoogleFonts.actor(color: Colors.white, fontSize: 20)),
-            Text(_translatedText,
+            Text(_keyWord,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.overpass(
                   color: Colors.red,
