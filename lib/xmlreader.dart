@@ -5,16 +5,15 @@ import 'package:xml/xml.dart' as xml;
 // jest slowo = true}
 //else {"Nie znaleziono"}
 
-Future<List<String>> getXmlFile(
-    BuildContext context, _translation, _keyWord) async {
+Future<List<String>> getXmlFile(BuildContext context, _typedText) async {
   String xmlString =
       await DefaultAssetBundle.of(context).loadString("assets/test.xml");
 
   var raw = xml.XmlDocument.parse(xmlString);
 
-  var elements = raw.findAllElements(_translation);
+  var elements = raw.findAllElements(_typedText);
 
-  return elements.map((noddde) {
-    return (noddde.text);
+  return elements.map((node) {
+    return (node.text);
   }).toList();
 }

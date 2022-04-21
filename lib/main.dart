@@ -33,14 +33,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 final _searchValue = TextEditingController();
+String _typedText = "finding txt";
+String _translatedText1 = "translation";
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _keyWord = "translted";
-  String _translation = "drugi tekst";
-
   @override
   void initState() {
-    getXmlFile(context, _translation, _keyWord);
+    getXmlFile(context, _typedText);
     super.initState();
   }
 
@@ -59,13 +58,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   TextSpan(
                       text: "Tran",
                       style: GoogleFonts.overpass(
-                          color: Colors.white.withOpacity(0.7),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30)),
+                          fontWeight: FontWeight.bold, fontSize: 30)),
                   TextSpan(
                       text: "Slate",
                       style: GoogleFonts.overpass(
-                          color: Colors.black.withOpacity(0.7),
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 30)),
                 ]),
@@ -77,38 +74,39 @@ class _MyHomePageState extends State<MyHomePage> {
         body:
             Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           Text(
-            "Type XML File",
+            "Search Word",
             style: GoogleFonts.overpass(
                 fontSize: 40, color: Colors.white, fontWeight: FontWeight.bold),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 104.0),
             child: TextField(
+              style: GoogleFonts.overpass(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 23),
               controller: _searchValue,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.search),
-                hintText: "Enter Text",
-                hintStyle: TextStyle(
-                  color: Colors.white,
-                ),
+                hintText: "Enter Word",
               ),
             ),
           ),
           Center(child: ButtonClass(
-            onpressed: () async {
-              final _translatedText =
-                  await getXmlFile(context, _translation, _keyWord);
-
+            whenClick: () async {
+              final _translatedText2 =
+                  await getXmlFile(context, _searchValue.text);
+              print("wartosc po funkcji:$_translatedText2");
               setState(() {
-                _translation = _searchValue.text;
-                _keyWord = _translatedText.toString();
+                _typedText = _searchValue.text;
+                _translatedText1 = _translatedText2.first.toString();
               });
             },
           )),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text("Szukany tekst:",
+            Text("finding text:",
                 style: GoogleFonts.actor(color: Colors.white, fontSize: 20)),
-            Text(_translation,
+            Text(_typedText,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.overpass(
                   color: Colors.green,
@@ -116,9 +114,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ))
           ]),
           Wrap(children: [
-            Text("Tłumaczenie:",
+            Text("translation:",
                 style: GoogleFonts.actor(color: Colors.white, fontSize: 20)),
-            Text(_keyWord,
+            Text(_translatedText1,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.overpass(
                   color: Colors.red,
