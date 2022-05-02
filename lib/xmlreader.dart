@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart' as xml;
 
-//jeśli (w pliku tekstowym [test.xml] jest słowo ze zmiennej _text2) {
-// jest slowo = true}
-//else {"Nie znaleziono"}
-
-Future<List<String>> getXmlFile(BuildContext context, _typedText) async {
-  String xmlString =
-      await DefaultAssetBundle.of(context).loadString("assets/test.xml");
-
+Future<List<String>> getXmlFile(
+    BuildContext context, _typedText, xmlString) async {
   var raw = xml.XmlDocument.parse(xmlString);
 
   var elements = raw.findAllElements(_typedText);
@@ -17,3 +11,9 @@ Future<List<String>> getXmlFile(BuildContext context, _typedText) async {
     return (node.text);
   }).toList();
 }
+
+// jeśli [if] wpisane słowo jest w XmlString {
+// [warunek tak]
+// przetłumacz }
+// else{
+// zamień _text1 na nic}

@@ -39,7 +39,7 @@ String _translatedText1 = "translation";
 class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
-    getXmlFile(context, _typedText);
+    getXmlFile(context, _searchValue.text, context);
     super.initState();
   }
 
@@ -94,13 +94,27 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Center(child: ButtonClass(
             whenClick: () async {
+              String xmlString = await DefaultAssetBundle.of(context)
+                  .loadString("assets/test.xml");
+
               final _translatedText2 =
-                  await getXmlFile(context, _searchValue.text);
-              print("wartosc po funkcji:$_translatedText2");
+                  await getXmlFile(context, _searchValue.text, xmlString);
+
               setState(() {
                 _typedText = _searchValue.text;
-                _translatedText1 = _translatedText2.first.toString();
               });
+
+              if (xmlString.contains(_typedText)) {
+                setState(() {
+                  _translatedText1 = _translatedText2.first.toString();
+                });
+              } else {
+                setState(() {
+                  _translatedText1 = "Brak słowa";
+                });
+              }
+
+              print("wartosc po funkcji:$_translatedText2");
             },
           )),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
