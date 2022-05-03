@@ -25,7 +25,7 @@ class LinePainter extends CustomPainter {
       ..strokeWidth = 2;
 
     canvas.drawLine(
-      Offset(size.width * 1 / 10000, size.height),
+      Offset(0, size.height),
       Offset(size.width, size.height),
       paint1,
     );
