@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:xmltranslator/button.dart';
+import 'package:xmltranslator/painter.dart';
 import 'package:xmltranslator/xmlreader.dart';
 
 void main() {
@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 47, 47, 47),
+        backgroundColor: Color.fromARGB(255, 77, 77, 77),
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 47, 47, 47),
@@ -71,72 +71,57 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           elevation: 20,
         ),
-        body:
-            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          Text(
-            "Search Word",
-            style: GoogleFonts.overpass(
-                fontSize: 40, color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 104.0),
-            child: TextField(
-              style: GoogleFonts.overpass(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 23),
-              controller: _searchValue,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                hintText: "Enter Word",
+        body: SafeArea(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+              GestureDetector(
+                child: TextField(
+                  style: GoogleFonts.overpass(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 23),
+                  controller: _searchValue,
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Enter Word",
+                  ),
+                  onEditingComplete: () async {
+                    String xmlString = await DefaultAssetBundle.of(context)
+                        .loadString("assets/test.xml");
+                    final _translatedText2 =
+                        await getXmlFile(context, _searchValue.text, xmlString);
+
+                    setState(() {
+                      _typedText = _searchValue.text;
+                    });
+
+                    if (xmlString.contains(_typedText)) {
+                      setState(() {
+                        _translatedText1 = _translatedText2.first.toString();
+                      });
+                    } else {
+                      setState(() {
+                        _translatedText1 = "Nie ma takowego słowa";
+                      });
+                      print("wartosc po funkcji:$_translatedText2");
+                    }
+                  },
+                ),
               ),
-            ),
-          ),
-          Center(child: ButtonClass(
-            whenClick: () async {
-              String xmlString = await DefaultAssetBundle.of(context)
-                  .loadString("assets/test.xml");
-
-              final _translatedText2 =
-                  await getXmlFile(context, _searchValue.text, xmlString);
-
-              setState(() {
-                _typedText = _searchValue.text;
-              });
-
-              if (xmlString.contains(_typedText)) {
-                setState(() {
-                  _translatedText1 = _translatedText2.first.toString();
-                });
-              } else {
-                setState(() {
-                  _translatedText1 = "Brak słowa";
-                });
-              }
-
-              print("wartosc po funkcji:$_translatedText2");
-            },
-          )),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text("finding text:",
-                style: GoogleFonts.actor(color: Colors.white, fontSize: 20)),
-            Text(_typedText,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.overpass(
-                  color: Colors.green,
-                  fontSize: 30,
-                ))
-          ]),
-          Wrap(children: [
-            Text("translation:",
-                style: GoogleFonts.actor(color: Colors.white, fontSize: 20)),
-            Text(_translatedText1,
-                textAlign: TextAlign.center,
-                style: GoogleFonts.overpass(
-                  color: Colors.red,
-                  fontSize: 30,
-                ))
-          ])
-        ]));
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: CustomPaint(
+                  foregroundPainter: LinePainter(),
+                ),
+              ),
+              Text(_translatedText1,
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.overpass(
+                    color: Colors.red,
+                    fontSize: 30,
+                  )),
+            ])));
   }
 }
