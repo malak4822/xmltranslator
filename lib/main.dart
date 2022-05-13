@@ -32,16 +32,16 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+String _typedText = "";
+String _translatedText1 = "";
+bool _isWord = false;
 final _searchValue = TextEditingController();
-String _typedText = "finding txt";
-String _translatedText1 = "translation";
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     getXmlFile(context, _searchValue.text, context);
     super.initState();
-    myFocusNode = FocusNode();
   }
 
   late FocusNode myFocusNode;
@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 77, 77, 77),
+        backgroundColor: const Color.fromARGB(255, 77, 77, 77),
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: const Color.fromARGB(255, 47, 47, 47),
@@ -59,11 +59,11 @@ class _MyHomePageState extends State<MyHomePage> {
               RichText(
                 text: TextSpan(children: [
                   TextSpan(
-                      text: "T r a n ",
+                      text: "Tran",
                       style: GoogleFonts.overpass(
                           fontWeight: FontWeight.bold, fontSize: 30)),
                   TextSpan(
-                      text: " S l a t e",
+                      text: " Slate",
                       style: GoogleFonts.overpass(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -78,39 +78,68 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(children: [
           Expanded(
             flex: 1,
-            child: TextField(
-              style: GoogleFonts.overpass(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 35),
-              controller: _searchValue,
-              textAlign: TextAlign.center,
-              textAlignVertical: TextAlignVertical.center,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: "Enter Word",
+            child: Container(
+              color: Colors.white12,
+              child: Center(
+                child: TextField(
+                  maxLines: null,
+                  expands: true,
+                  keyboardType: TextInputType.text,
+                  style: GoogleFonts.overpass(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 35),
+                  controller: _searchValue,
+                  textAlign: TextAlign.center,
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Enter Word",
+                  ),
+                  onChanged: (a) async {
+                    final _textToUpper = _searchValue.text.toUpperCase();
+                    final _textToLower = _searchValue.text.toLowerCase();
+                    var _everyTypeOfText = <String>[
+                      _searchValue.text,
+                      _textToLower,
+                      _textToUpper
+                    ];
+                    print(_everyTypeOfText);
+
+                    String xmlString = await DefaultAssetBundle.of(context)
+                        .loadString("assets/test.xml");
+                    var _translatedText2 =
+                        await getXmlFile(context, _searchValue.text, xmlString);
+
+                    setState(() {
+                      _typedText = _searchValue.text;
+                    });
+
+                    if (_everyTypeOfText.any((element) => element == "dwd")) {
+                      print("prawda");
+                    } else {
+                      print("falsz");
+                    }
+
+                    if (xmlString.contains(_typedText)) {
+                      _isWord = true;
+                      setState(() {
+                        _translatedText1 = _translatedText2.first.toString();
+                      });
+                      print("tłumaczenie wyrazu:$_translatedText2");
+                    } else {
+                      _isWord = false;
+                      setState(() {
+                        _translatedText1 = "Nie ma takowego słowa";
+                      });
+                      print("nie ma tłumaczenia");
+                    }
+                    if (_isWord == false) {
+                      _translatedText1 = _searchValue.text;
+                    }
+                  },
+                ),
               ),
-              onEditingComplete: () async {
-                String xmlString = await DefaultAssetBundle.of(context)
-                    .loadString("assets/test.xml");
-                final _translatedText2 =
-                    await getXmlFile(context, _searchValue.text, xmlString);
-
-                setState(() {
-                  _typedText = _searchValue.text;
-                });
-
-                if (xmlString.contains(_typedText)) {
-                  setState(() {
-                    _translatedText1 = _translatedText2.first.toString();
-                  });
-                } else {
-                  setState(() {
-                    _translatedText1 = "Nie ma takowego słowa";
-                  });
-                  print("wartosc po funkcji:$_translatedText2");
-                }
-              },
             ),
           ),
           SizedBox(
@@ -125,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text(_translatedText1,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.overpass(
-                    color: Colors.red,
+                    color: Colors.white,
                     fontSize: 30,
                   )),
             ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LinePaintPage extends StatelessWidget {
+  const LinePaintPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: Center(
@@ -31,7 +33,7 @@ class LinePainter extends CustomPainter {
     );
 
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.9)
+      ..color = Colors.white
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 5;
 

@@ -11,9 +11,3 @@ Future<List<String>> getXmlFile(
     return (node.text);
   }).toList();
 }
-
-// jeśli [if] wpisane słowo jest w XmlString {
-// [warunek tak]
-// przetłumacz }
-// else{
-// zamień _text1 na nic}
