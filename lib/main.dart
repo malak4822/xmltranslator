@@ -32,9 +32,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-String _typedText = "";
-String _translatedText1 = "";
-bool _isWord = false;
+String _shownText = "";
 final _searchValue = TextEditingController();
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -43,8 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
     getXmlFile(context, _searchValue.text, context);
     super.initState();
   }
-
-  late FocusNode myFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -97,45 +93,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     hintText: "Enter Word",
                   ),
                   onChanged: (a) async {
-                    final _textToUpper = _searchValue.text.toUpperCase();
-                    final _textToLower = _searchValue.text.toLowerCase();
-                    var _everyTypeOfText = <String>[
-                      _searchValue.text,
-                      _textToLower,
-                      _textToUpper
-                    ];
-                    print(_everyTypeOfText);
-
                     String xmlString = await DefaultAssetBundle.of(context)
                         .loadString("assets/test.xml");
-                    var _translatedText2 =
+
+                    var _translationOfText =
                         await getXmlFile(context, _searchValue.text, xmlString);
 
                     setState(() {
-                      _typedText = _searchValue.text;
+                      _shownText = _searchValue.text;
                     });
 
-                    if (_everyTypeOfText.any((element) => element == "dwd")) {
-                      print("prawda");
-                    } else {
-                      print("falsz");
-                    }
-
-                    if (xmlString.contains(_typedText)) {
-                      _isWord = true;
+                    if (xmlString.contains(_searchValue.text.toUpperCase())) {
                       setState(() {
-                        _translatedText1 = _translatedText2.first.toString();
+                        _shownText = _translationOfText.first.toString();
                       });
-                      print("tłumaczenie wyrazu:$_translatedText2");
-                    } else {
-                      _isWord = false;
-                      setState(() {
-                        _translatedText1 = "Nie ma takowego słowa";
-                      });
-                      print("nie ma tłumaczenia");
-                    }
-                    if (_isWord == false) {
-                      _translatedText1 = _searchValue.text;
                     }
                   },
                 ),
@@ -151,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             flex: 2,
             child: Center(
-              child: Text(_translatedText1,
+              child: Text(_shownText,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.overpass(
                     color: Colors.white,
