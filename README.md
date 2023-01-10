@@ -1,6 +1,6 @@
 # xmltranslator
 
-Never ended project due starting new one. It is translator from japanese to english language. Name of app comes from format of file which contained saved translated word's.
+Never ended project due starting new one. It is translator from japanese to english language. Name of app comes from format of file which containes saved translated word's.
 
 ## Bugs
 
