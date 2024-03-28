@@ -1,9 +1,13 @@
-# xmltranslator
+# Jap-Eng XML Translator
 
-App made in flutter. 
+## Description
+Jap-Eng XMLTranslator is a mobile application developed using Flutter. While the project was never completed due to the commencement of a new and improved project, it aimed to serve as a translator from Japanese to English. The name of the app was derived from the format of the file containing saved translated words, emphasizing its practicality and efficiency.
 
-Project never ended due starting new, better one. It is translator from japanese to english language. Name of app comes from format of file which containes saved translated word's.
+## Screenshots
 
-## Bugs
+## Used To Do App
+- XML Package
+- CustomPaint
 
-If you see any bugs or pointless lines of code, please email me at: kmalak4822@gmail.com
+## Bugs & Tips
+If you encounter any bugs or unnecessary lines of code, please email me at: kmalak4822@gmail.com
